@@ -25,7 +25,7 @@ const App = () => {
       display.classList.remove('diminuir');
     }
 
-    if (display.innerHTML.length > 60) {
+    if (display.innerHTML.length > 40) {
       limpar();
       mostrarDisplay('ERROR');
     }
