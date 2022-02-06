@@ -3,30 +3,36 @@ import './App.css';
 
 const App = () => {
 
-  let limpar = () => document.getElementsByName('display')[0].value = '';
+  let limpar = () => document.getElementById('display').innerHTML = '';
 
   function mostrarDisplay(caracter) {
-    let display = document.getElementsByName('display')[0];
+    let display = document.getElementById('display');
 
-    if(isNaN(display.value.charAt(display.value.length - 1)) && isNaN(caracter)){
+    if(isNaN(display.innerHTML.charAt(display.innerHTML.length - 1)) && isNaN(caracter)){
       apagarCaracter();
     }
 
-    if (display.value == 'ERROR') {
+    if (display.innerHTML == 'ERROR') {
       limpar();
     }
 
-    let valorAtual = display.value;
-    display.value = valorAtual + caracter;
+    let valorAtual = display.innerHTML;
+    display.innerHTML = valorAtual + caracter;
 
-    if (display.value.length > 8) {
+    if (display.innerHTML.length > 8) {
+      display.classList.add('diminuir');
+    } else {
+      display.classList.remove('diminuir');
+    }
+
+    if (display.innerHTML.length > 60) {
       limpar();
       mostrarDisplay('ERROR');
     }
   }
 
   function apagarCaracter(e){
-    let display = document.getElementsByName('display')[0].value;
+    let display = document.getElementById('display').innerHTML;
     let valor = display.substr(0, display.length - 1);
 
     limpar();
@@ -39,7 +45,7 @@ const App = () => {
   }
 
   function total() {
-    let display = document.getElementsByName('display')[0].value;
+    let display = document.getElementById('display').innerHTML;
     let total = eval(display);
 
     limpar();
@@ -59,7 +65,7 @@ const App = () => {
 
   return (
     <main className='calculadora'>
-      <input type="text" name="display" maxLength="8" readOnly placeholder='00000000000' />
+      <div type="text" id='display' className='display'></div>
       <div className='gridBotoes'>
         {btnNumeros}
         <button onClick={total}>=</button>
