@@ -14,7 +14,6 @@ const App = () => {
     let total = display.toString();
     total = eval(total);
     setDisplay(total);
-    setDiminuirDisplay(total.length > 8 ? true : false);
   }
 
   function apagarCaracter(){
@@ -23,7 +22,6 @@ const App = () => {
     } else {
       setDisplay(display.substr(0, display.length - 1));
     }
-    setDiminuirDisplay(display.length > 10 ? true : false);
   }
 
   function atualizarDisplay(caracter){
