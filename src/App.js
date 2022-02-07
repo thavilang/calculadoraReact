@@ -2,70 +2,60 @@ import React from 'react';
 import './App.css';
 
 const App = () => {
+  const [display, setDisplay] = React.useState('0');
+  const [diminuirDisplay, setDiminuirDisplay] = React.useState(false);
 
-  let limpar = () => document.getElementById('display').innerHTML = '';
+  function limpar(){
+    setDisplay('0');
+    setDiminuirDisplay(false);
+  }
 
-  function mostrarDisplay(caracter) {
-    let display = document.getElementById('display');
+  function total(){
+    let total = display.toString();
+    total = eval(total);
+    setDisplay(total);
+    setDiminuirDisplay(total.length > 8 ? true : false);
+  }
 
-    if(isNaN(display.innerHTML.charAt(display.innerHTML.length - 1)) && isNaN(caracter)){
-      apagarCaracter();
-    }
-
-    if (display.innerHTML == 'ERROR') {
-      limpar();
-    }
-
-    let valorAtual = display.innerHTML;
-    display.innerHTML = valorAtual + caracter;
-
-    if (display.innerHTML.length > 8) {
-      display.classList.add('diminuir');
+  function apagarCaracter(){
+    if(display.length <= 1 || display.length == undefined){
+      setDisplay('0');
     } else {
-      display.classList.remove('diminuir');
+      setDisplay(display.substr(0, display.length - 1));
     }
+    setDiminuirDisplay(display.length > 10 ? true : false);
+  }
 
-    if (display.innerHTML.length > 40) {
-      limpar();
-      mostrarDisplay('ERROR');
+  function atualizarDisplay(caracter){
+    if(display.length > 40){
+      setDisplay('ERROR');
+    } else if(display == 'ERROR' || display == '0'){
+      setDisplay(caracter);
+    } else {
+      let displayAtual = display.toString();
+      if(isNaN(displayAtual.charAt(display.length - 1)) && isNaN(caracter)){
+        setDisplay(`${display.substr(0, display.length - 1)}${caracter}`);
+      } else {
+        setDisplay(`${display}${caracter}`);
+      }
     }
-  }
-
-  function apagarCaracter(e){
-    let display = document.getElementById('display').innerHTML;
-    let valor = display.substr(0, display.length - 1);
-
-    limpar();
-    mostrarDisplay(valor);
-  }
-
-  function pegarCaracter(e) {
-    let caracter = e.target.getAttribute('js-caracter');
-    mostrarDisplay(caracter);
-  }
-
-  function total() {
-    let display = document.getElementById('display').innerHTML;
-    let total = eval(display);
-
-    limpar();
-    mostrarDisplay(total);
+    setDiminuirDisplay(display.length > 8 ? true : false);
   }
 
   let btnNumeros = [];
   for (let index = 9; index >= 0; index--) {
     if (index == 0){
-      btnNumeros.push(<button onClick={pegarCaracter} key="10" js-caracter=".">,</button>);
+      btnNumeros.push(<button onClick={() => atualizarDisplay('.')} key="10">,</button>);
     }
-    btnNumeros.push(<button onClick={pegarCaracter} key={index} js-caracter={index}>{index}</button>);
+    btnNumeros.push(<button onClick={() => atualizarDisplay(index)} key={index}>{index}</button>);
   }
 
   let btnOperacoes = ['+', '-', '*', '/'];
-  btnOperacoes = btnOperacoes.map((operacao, index) => <button onClick={pegarCaracter} key={index} js-caracter={operacao}>{operacao}</button>);
+  btnOperacoes = btnOperacoes.map((operacao, index) => <button onClick={() => atualizarDisplay(operacao)} key={index}>{operacao}</button>);
 
   return (
     <main className='calculadora'>
-      <div type="text" id='display' className='display'></div>
+      <div className={diminuirDisplay ? 'display diminuir' : 'display'}>{display}</div>
       <div className='gridBotoes'>
         {btnNumeros}
         <button onClick={total}>=</button>
