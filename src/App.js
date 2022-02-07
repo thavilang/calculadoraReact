@@ -11,33 +11,39 @@ const App = () => {
   }
 
   function total(){
-    let total = display.toString();
-    total = eval(total);
-    setDisplay(total);
+    let conteudoDisplay = display.toString();
+    conteudoDisplay = eval(conteudoDisplay);
+    setDisplay(conteudoDisplay);
+    conteudoDisplay = conteudoDisplay.toString();
+    setDiminuirDisplay(conteudoDisplay.length > 8 ? true : false);
   }
 
   function apagarCaracter(){
-    if(display.length <= 1 || display.length == undefined){
-      setDisplay('0');
+    let conteudoDisplay = display.toString();
+    if(conteudoDisplay.length <= 1 || conteudoDisplay.length == undefined){
+      conteudoDisplay = '0';
     } else {
-      setDisplay(display.substr(0, display.length - 1));
+      conteudoDisplay = conteudoDisplay.substr(0, conteudoDisplay.length - 1);
     }
+    setDisplay(conteudoDisplay);
+    setDiminuirDisplay(conteudoDisplay.length > 8 ? true : false);
   }
 
   function atualizarDisplay(caracter){
-    if(display.length > 40){
-      setDisplay('ERROR');
-    } else if(display == 'ERROR' || display == '0'){
-      setDisplay(caracter);
+    let conteudoDisplay = display.toString();
+    if(conteudoDisplay.length > 40){
+      conteudoDisplay = 'ERROR';
+    } else if(conteudoDisplay == 'ERROR' || conteudoDisplay == '0'){
+      conteudoDisplay = caracter;
     } else {
-      let displayAtual = display.toString();
-      if(isNaN(displayAtual.charAt(display.length - 1)) && isNaN(caracter)){
-        setDisplay(`${display.substr(0, display.length - 1)}${caracter}`);
+      if(isNaN(conteudoDisplay.charAt(conteudoDisplay.length - 1)) && isNaN(caracter)){
+        conteudoDisplay = `${display.substr(0, display.length - 1)}${caracter}`;
       } else {
-        setDisplay(`${display}${caracter}`);
+        conteudoDisplay = `${display}${caracter}`;
       }
     }
-    setDiminuirDisplay(display.length > 8 ? true : false);
+    setDisplay(conteudoDisplay);
+    setDiminuirDisplay(conteudoDisplay.length > 8 ? true : false);
   }
 
   let btnNumeros = [];
